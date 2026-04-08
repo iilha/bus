@@ -1,3 +1,5 @@
+English | [繁體中文](README_zh.md)
+
 # Taiwan Bus
 
 Progressive Web App for Taiwan city bus nearby stops and real-time arrivals.
