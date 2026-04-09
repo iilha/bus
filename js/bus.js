@@ -239,7 +239,7 @@ function toggleLang() {
     if (typeof saveLanguage === 'function') {
         saveLanguage(isZh ? 'zh' : 'en');
     } else {
-        localStorage.setItem('ubike-lang', isZh ? 'zh' : 'en');
+        localStorage.setItem('bus-lang', isZh ? 'zh' : 'en');
     }
     updateUI();
 }
@@ -2033,7 +2033,7 @@ async function init() {
     console.log('[Bus] Initializing...');
 
     // Restore preferences
-    const savedLang = localStorage.getItem('ubike-lang');
+    const savedLang = localStorage.getItem('bus-lang');
     if (savedLang) isZh = savedLang === 'zh';
 
     const savedCity = localStorage.getItem('bus-city');

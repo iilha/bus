@@ -36,7 +36,6 @@ The app can be served via HTTP (GitHub Pages), loaded in native WebView wrappers
 
 ### Navigation Header
 - Language toggle button (EN/中文)
-- Links to other transport apps (YouBike, MRT, Rail, THSR)
 - Active state highlighting for current page
 
 ### Route Schedule Tab

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Taiwan Transport PWA - Shared Utilities Module
+ * BUS PWA - Shared Utilities Module
  * Common functions and configurations used across multiple pages
  */
 
@@ -10,12 +10,7 @@
 // ============================================================
 
 /**
- * Official YouBike API - covers all cities across Taiwan
- */
-const YOUBIKE_API = 'https://apis.youbike.com.tw/json/station-yb2.json';
-
 /**
- * City configurations with area codes for YouBike API filtering
  */
 const CITIES = {
     all: { name: { en: 'All Cities', zh: '全部' }, areaCode: null, center: [23.5, 121] },
@@ -35,11 +30,6 @@ const CITIES = {
 };
 
 /**
- * YouBike fare data per city - base tiers + per-city subsidy/TPASS info
- * Base rates are the same across all 13 cities; per-city data captures subsidy + TPASS only.
- * Source: youbike.com.tw/region/taipei/rate/
- */
-const YOUBIKE_FARES = {
     _base: {
         yb2: [
             { minutes: 240, per30: 10 },
@@ -70,8 +60,7 @@ const YOUBIKE_FARES = {
  * localStorage keys used across the app
  */
 const STORAGE_KEYS = {
-    LANG: 'ubike-lang',
-    CITY: 'ubike-city',
+    LANG: 'bus-lang',
     BUS_CITY: 'bus-city',
     MRT_SYSTEM: 'mrt-system',
     MRT_LANG: 'mrt-lang',
@@ -154,35 +143,7 @@ function formatDistance(meters, isZh = false) {
     return `${(meters / 1000).toFixed(1)} ${isZh ? '公里' : 'km'}`;
 }
 
-// ============================================================
-// YOUBIKE DATA UTILITIES
-// ============================================================
-
 /**
- * Normalize station data from official YouBike API to common schema
- * @param {Object} s - Raw station data from API
- * @returns {Object} Normalized station object
- */
-function normalizeStation(s) {
-    const cityKey = Object.keys(CITIES).find(key => CITIES[key].areaCode === s.area_code) || s.area_code;
-    return {
-        sno: s.station_no,
-        sna: s.name_tw,
-        snaen: s.name_en || s.name_tw,
-        sarea: s.district_tw,
-        sareaen: s.district_en || s.district_tw,
-        ar: s.address_tw,
-        aren: s.address_en || s.address_tw,
-        latitude: parseFloat(s.lat),
-        longitude: parseFloat(s.lng),
-        available_rent_bikes: parseInt(s.available_spaces) || 0,
-        available_return_bikes: parseInt(s.empty_spaces) || 0,
-        ebikes: parseInt(s.available_spaces_detail?.eyb) || 0,
-        totalDocks: parseInt(s.parking_spaces) || 0,
-        status: s.status,
-        city: cityKey,
-        areaCode: s.area_code
-    };
 }
 
 /**
@@ -399,9 +360,7 @@ function createMap(elementId, center, zoom = 14) {
 // ============================================================
 
 // Export to window for browser use
-window.YOUBIKE_API = YOUBIKE_API;
 window.CITIES = CITIES;
-window.YOUBIKE_FARES = YOUBIKE_FARES;
 window.STORAGE_KEYS = STORAGE_KEYS;
 window.detectLanguage = detectLanguage;
 window.isChineseLocale = isChineseLocale;
@@ -409,8 +368,6 @@ window.saveLanguage = saveLanguage;
 window.deg2rad = deg2rad;
 window.getDistanceInMeters = getDistanceInMeters;
 window.formatDistance = formatDistance;
-window.normalizeStation = normalizeStation;
-window.getMarkerType = getMarkerType;
 window.formatTime = formatTime;
 window.getCurrentMinutes = getCurrentMinutes;
 window.getCountdown = getCountdown;
@@ -427,9 +384,7 @@ window.createMap = createMap;
 // For environments that support modules (Node.js)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        YOUBIKE_API,
         CITIES,
-        YOUBIKE_FARES,
         STORAGE_KEYS,
         detectLanguage,
         isChineseLocale,
@@ -437,8 +392,6 @@ if (typeof module !== 'undefined' && module.exports) {
         deg2rad,
         getDistanceInMeters,
         formatDistance,
-        normalizeStation,
-        getMarkerType,
         formatTime,
         getCurrentMinutes,
         getCountdown,
