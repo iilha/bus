@@ -1,0 +1,9 @@
+{
+  "appId": "bus",
+  "appName": "ubus  Monitor",
+  "apiBase": "https://api.transport-pwa.com/bus",
+  "siteBase": "https://bus.transport-pwa.com/",
+  "supportEmail": "transport-pwa@googlegroups.com",
+  "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
+  "storagePrefix": "bus_"
+}
