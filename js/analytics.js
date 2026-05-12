@@ -62,6 +62,12 @@ export async function trackEvent(eventName, eventProps = {}) {
     event.event_props = { error: 'props_truncated' };
   }
 
+  // Dev mode: log but don't send (production API requires worker signature)
+  if (_config.devMode) {
+    _log('Dev mode: Event created (not sent)', event);
+    return;
+  }
+
   if (!navigator.onLine) {
     _queueEvent(event);
     _log('Offline, queued event', event);
@@ -126,6 +132,10 @@ function _queueEvent(event) {
 
 export async function flushEventQueue() {
   if (!_config?.features?.events) return;
+  if (_config.devMode) {
+    _log('Dev mode: Flush skipped');
+    return;
+  }
   if (_flushing) {
     _log('Flush already in progress, skipping');
     return;

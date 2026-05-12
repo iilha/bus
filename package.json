@@ -3,9 +3,12 @@
   "private": true,
   "scripts": {
     "test": "npx playwright test",
-    "test:headed": "npx playwright test --headed"
+    "test:headed": "npx playwright test --headed",
+    "dev": "node proxy-server.js",
+    "dev:simple": "python3 -m http.server 8002"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1"
+    "@playwright/test": "^1.59.1",
+    "http-proxy": "^1.18.1"
   }
 }

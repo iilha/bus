@@ -1,13 +1,14 @@
 {
   "appId": "bus",
   "appName": "Taiwan Bus",
-  "apiBase": "https://api.octile.eu.cc",
+  "apiBase": "",
   "siteBase": "https://iilha.github.io/bus/",
   "tdxProxyUrl": "https://tdx-proxy.owen-ouyang.workers.dev",
   "features": {
     "events": true
   },
   "debug": true,
+  "devMode": true,
   "supportEmail": "octile-pwa+bus@googlegroups.com",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
   "storagePrefix": "bus_",
