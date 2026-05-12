@@ -7,7 +7,7 @@
   "features": {
     "events": true
   },
-  "debug": false,
+  "debug": true,
   "devMode": false,
   "supportEmail": "octile-pwa+bus@googlegroups.com",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
