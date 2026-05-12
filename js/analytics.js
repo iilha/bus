@@ -107,7 +107,6 @@ async function _sendEvent(event) {
         'X-Player-UUID': event.browser_uuid
       },
       body: JSON.stringify(event),
-      credentials: 'include',  // Harmless (cookies not used for identity)
       signal: controller.signal
     });
 
