@@ -1,15 +1,21 @@
 {
   "appId": "bus",
-  "appName": "ubus  Monitor",
-  "apiBase": "https://app.octileapp.workers.dev",
+  "appName": "Taiwan Bus",
+  "apiBase": "https://api.octile.eu.cc",
   "siteBase": "https://iilha.github.io/bus/",
-  "workerUrl": "https://api.octile.eu.cc",
-  "eventsUrl": "https://api.octile.eu.cc/events",
+  "tdxProxyUrl": "https://tdx-proxy.owen-ouyang.workers.dev",
   "features": {
     "events": true
   },
   "debug": false,
   "supportEmail": "octile-pwa@googlegroups.com",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
-  "storagePrefix": "bus_"
+  "storagePrefix": "bus_",
+  "map": {
+    "tileUrl": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
+  },
+  "external": {
+    "googleMapsDirections": "https://www.google.com/maps/dir/?api=1&destination="
+  }
 }
