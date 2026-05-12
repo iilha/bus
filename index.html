@@ -1393,17 +1393,21 @@ window.toggleLang = toggleLang;
         const config = await configResp.json();
 
         // Initialize analytics
+        console.log('[Init] Initializing analytics...');
         initAnalytics(config);
+        console.log('[Init] Analytics initialized');
 
         // Track app_open event with session guard
         const trackAppOpen = () => {
           const sessionKey = config.storagePrefix + 'session_tracked';
+          console.log('[Init] Checking session tracking:', { sessionKey, tracked: sessionStorage.getItem(sessionKey) });
 
           if (sessionStorage.getItem(sessionKey)) {
-            console.debug('[Analytics] app_open already tracked this session');
+            console.log('[Init] app_open already tracked this session');
             return;
           }
 
+          console.log('[Init] Tracking app_open...');
           sessionStorage.setItem(sessionKey, '1');
 
           trackEvent('app_open', {
@@ -1412,6 +1416,7 @@ window.toggleLang = toggleLang;
             lang: localStorage.getItem(config.storagePrefix + 'lang') || 'en',
             ota_version: parseInt(localStorage.getItem(config.storagePrefix + 'ota_version')) || 0
           });
+          console.log('[Init] app_open tracked');
         };
 
         // Fix #7: DOMContentLoaded race - check if DOM already ready
