@@ -2,7 +2,7 @@
   "appId": "bus",
   "appName": "ubus  Monitor",
   "apiBase": "https://app.octileapp.workers.dev",
-  "siteBase": "https://bus.transport-pwa.com/",
+  "siteBase": "https://iilha.github.io/bus/",
   "workerUrl": "https://api.octile.eu.cc",
   "eventsUrl": "https://api.octile.eu.cc/events",
   "features": {

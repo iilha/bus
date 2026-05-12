@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_VERSION = 'v3'; // bumped from v2
+const CACHE_VERSION = 'v4'; // bumped for feedback modal update
 const CACHE_PREFIX = 'bus-';
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 
