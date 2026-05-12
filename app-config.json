@@ -8,7 +8,7 @@
     "events": true
   },
   "debug": false,
-  "supportEmail": "octile-pwa@googlegroups.com",
+  "supportEmail": "octile-pwa+bus@googlegroups.com",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
   "storagePrefix": "bus_",
   "map": {
