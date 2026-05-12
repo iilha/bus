@@ -1,6 +1,11 @@
 node_modules/
 test-results/
 
-# Android keystores
+# Android
+.gradle/
 *.keystore
 scripts/keystore_b64.txt
+android/app/build/
+android/.gradle/
+android/build/
+android/local.properties
