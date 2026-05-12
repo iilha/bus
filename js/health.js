@@ -12,6 +12,12 @@ async function loadConfig() {
 
 export async function refreshBackendStatus() {
   const config = await loadConfig();
+
+  // Skip health check if apiBase is not configured (dev mode with no proxy)
+  if (!config.apiBase) {
+    return true; // Assume healthy in dev mode
+  }
+
   try {
     // Manual timeout (AbortSignal.timeout not supported on old WebView)
     const controller = new AbortController();

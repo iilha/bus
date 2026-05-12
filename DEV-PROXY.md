@@ -13,39 +13,56 @@ Set `"devMode": true` in `app-config.json` to:
 
 ## Usage
 
-### Start the dev server:
+### Setup for local development:
 
-```bash
-npm run dev
-```
-
-This starts a server on `http://localhost:8003` that serves static files.
-
-### Test events in dev mode:
-
-1. Ensure `app-config.json` has:
-   ```json
-   {
-     "debug": true,
-     "devMode": true
-   }
+1. Copy the dev config template:
+   ```bash
+   cp app-config.local.json app-config.json
    ```
+   This overwrites the production config with dev settings:
+   - `apiBase: ""` (use relative paths for proxy)
+   - `debug: true` (enable console logs)
+   - `devMode: true` (skip event sending)
 
-2. Open **http://localhost:8003** in browser
+   **Note:** Don't commit this change. The repo should contain production config.
 
-3. Open DevTools → Console
+2. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+   This starts a server on `http://localhost:8003` that serves static files.
 
-4. You should see:
+3. Open **http://localhost:8003** in browser
+
+4. Open DevTools → Console
+
+5. You should see:
    ```
    [Analytics] Analytics initialized {appId: "bus"}
    [Analytics] Dev mode: Event created (not sent) {...}
    ```
 
-5. The logged event shows exactly what **would** be sent in production
+6. The logged event shows exactly what **would** be sent in production
+
+### Restore production config:
+
+Before committing any changes, restore the production config:
+```bash
+git checkout app-config.json
+```
+
+Or manually verify:
+```json
+{
+  "apiBase": "https://api.octile.eu.cc",
+  "debug": false,
+  "devMode": false
+}
+```
 
 ### Production Configuration
 
-Before deploying to production, update `app-config.json`:
+The repository's `app-config.json` should always contain production settings:
 
 ```json
 {
@@ -55,7 +72,9 @@ Before deploying to production, update `app-config.json`:
 }
 ```
 
-Or simply remove `devMode` (defaults to false). Events will then be sent through the production Cloudflare Worker with proper authentication.
+**Important:** Never commit dev settings (`apiBase: ""`, `devMode: true`, `debug: true`) to the repository. These should only exist in your local working copy during development.
+
+In production, events are sent through the authorized Cloudflare Worker with proper authentication.
 
 ### Config Validation (Guardrails)
 
