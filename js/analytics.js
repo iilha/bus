@@ -78,7 +78,7 @@ export async function trackEvent(eventName, eventProps = {}) {
 }
 
 async function _sendEvent(event) {
-  const url = _config.eventsUrl || (_config.workerUrl + '/events');
+  const url = `${_config.apiBase}/events`;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
