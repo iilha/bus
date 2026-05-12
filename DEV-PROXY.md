@@ -57,6 +57,36 @@ Before deploying to production, update `app-config.json`:
 
 Or simply remove `devMode` (defaults to false). Events will then be sent through the production Cloudflare Worker with proper authentication.
 
+### Config Validation (Guardrails)
+
+Three layers of protection prevent devMode from accidentally being enabled in production:
+
+**1. Build-time validation** (CI/CD)
+```bash
+npm run validate:config
+```
+This script checks:
+- `devMode` must be false or absent in production
+- `debug` must be false or absent in production  
+- `apiBase` must be `https://api.octile.eu.cc`
+
+The CI workflow runs this automatically and **fails the build** if validation fails.
+
+**2. Runtime warning**
+
+If `devMode: true` is detected on a non-localhost origin, the console shows:
+```
+⚠️  devMode is true in production origin - events will not be sent
+```
+
+**3. Event metadata**
+
+All events include:
+- `env: "dev" | "prod"` - determined by hostname and devMode flag
+- `origin: string` - the actual origin (e.g., `https://iilha.github.io`)
+
+This allows backend analytics to filter dev vs prod events, even if config was misconfigured.
+
 ## Alternative: Simple Python server
 
 If you don't need the proxy server:

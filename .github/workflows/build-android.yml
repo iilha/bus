@@ -34,6 +34,9 @@ jobs:
       - name: Validate i18n
         run: node scripts/validate-i18n.js
 
+      - name: Validate config for production
+        run: node scripts/validate-config.js --env=production
+
       - name: Decode release keystore
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:

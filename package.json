@@ -5,7 +5,9 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "dev": "node proxy-server.js",
-    "dev:simple": "python3 -m http.server 8002"
+    "dev:simple": "python3 -m http.server 8002",
+    "validate:config": "node scripts/validate-config.js",
+    "validate:config:dev": "node scripts/validate-config.js --env=development"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

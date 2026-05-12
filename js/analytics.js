@@ -29,6 +29,12 @@ export function initAnalytics(config) {
     return;
   }
 
+  // Runtime safety: warn if devMode is enabled in production
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if (!isLocalhost && config.devMode === true) {
+    console.warn('[Analytics] ⚠️  devMode is true in production origin - events will not be sent');
+  }
+
   window.addEventListener('online', flushEventQueue);
   _log('Analytics initialized', { appId: config.appId });
 }
@@ -44,12 +50,16 @@ export async function trackEvent(eventName, eventProps = {}) {
   }
   _lastEventTime = now;
 
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
   const event = {
     event_type: 'session',
     event_name: eventName,
     app_id: _config.appId,
     browser_uuid: getBrowserUUID(),  // Client UUID always
     platform: _getPlatform(),
+    env: isLocalhost || _config.devMode ? 'dev' : 'prod',
+    origin: window.location.origin,
     event_props: _sanitizeProps(eventProps),
     timestamp_utc: new Date().toISOString(),
     submission_id: crypto.randomUUID()
