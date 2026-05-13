@@ -9,6 +9,7 @@
   },
   "debug": true,
   "devMode": false,
+  "turnstileSiteKey": "0x4AAAAAACuir272GuoMUfnx",
   "supportEmail": "octile-pwa+bus@googlegroups.com",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=tw.pwa.bus",
   "storagePrefix": "bus_",

@@ -12,6 +12,8 @@
     <link rel="manifest" href="manifest.webapp">
     <link rel="apple-touch-icon" href="img/icon-180.png">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -1386,11 +1388,17 @@ window.toggleLang = toggleLang;
     import { refreshBackendStatus, startHealthPoll } from './js/health.js';
     import { initOta, checkForUpdate } from './js/ota.js';
     import { initAnalytics, trackEvent } from './js/analytics.js';
+    import { initSession } from './js/session.js';
 
     async function initializeInfrastructure() {
       try {
         const configResp = await fetch('./app-config.json');
         const config = await configResp.json();
+
+        // Initialize session manager (doesn't bootstrap yet, just sets config)
+        console.log('[Init] Initializing session manager...');
+        initSession(config);
+        console.log('[Init] Session manager initialized');
 
         // Initialize analytics
         console.log('[Init] Initializing analytics...');

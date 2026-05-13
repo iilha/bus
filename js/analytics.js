@@ -1,13 +1,15 @@
 /**
- * Minimal event tracking for transport PWAs (Fixed version)
+ * Minimal event tracking for transport PWAs (v1.5 - Session Token)
  * - Session events only (app_open)
  * - Offline queue with throttled flush (3.1s between sends)
  * - Size limits (2 KB)
  * - Client UUID only (no cookie reliance)
+ * - Session token authentication (lazy bootstrap)
  * - Debug logging
  */
 
 import { getBrowserUUID } from './uuid.js';
+import { ensureSession, clearSession } from './session.js';
 
 const QUEUE_KEY = '{app_id}_event_queue';
 const MAX_QUEUE_SIZE = 50;
@@ -96,21 +98,63 @@ export async function trackEvent(eventName, eventProps = {}) {
 async function _sendEvent(event) {
   const url = `${_config.apiBase}/events`;
 
+  // Get session token (fast if cached ~50ms; bootstrap if needed ~2s)
+  let sessionToken = null;
+  try {
+    sessionToken = await ensureSession();
+  } catch (err) {
+    _log('Failed to get session token:', err);
+    // Continue anyway - web with Origin might not need it
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
 
   try {
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Player-UUID': event.browser_uuid
+    };
+
+    // Add session token if available (preferred over Turnstile)
+    if (sessionToken) {
+      headers['X-Session-Token'] = sessionToken;
+    }
+
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Player-UUID': event.browser_uuid
-      },
+      headers,
       body: JSON.stringify(event),
       signal: controller.signal
     });
 
     clearTimeout(timeout);
+
+    // If 401 (expired/invalid token), clear cache and immediate retry
+    if (response.status === 401 && sessionToken) {
+      _log('Session token rejected, clearing cache and retrying...');
+      clearSession();
+
+      // Immediate retry with new session (don't wait for next event)
+      try {
+        const newToken = await ensureSession();
+        if (newToken) {
+          headers['X-Session-Token'] = newToken;
+          const retryResponse = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(event),
+            signal: controller.signal
+          });
+          if (retryResponse.ok) {
+            _log('Retry succeeded with new session token');
+            return await retryResponse.json();
+          }
+        }
+      } catch (retryErr) {
+        _log('Retry failed:', retryErr.message);
+      }
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
